@@ -35,8 +35,8 @@
     width: 100vw;
     height: 100vh;
     z-index: -9999;
-    background: #9932cc;
-    background-color: #9932cc;
+    background: black;
+    /* background-color: #9932cc; */
     /* background-image: url("./images/bg3.jpg"); */
     /* background-color: #CCCCCC; */
   }

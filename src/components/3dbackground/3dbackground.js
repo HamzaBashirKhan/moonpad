@@ -3,10 +3,10 @@ import * as THREE from "three";
 import { TextureLoader } from "three";
 import { useLoader } from "@react-three/fiber";
 
-import EarthDayMap from "../../assets/8k_earth_daymap.jpg";
-import EarthNormalMap from "../../assets/8k_earth_normal_map.jpg";
-import EarthSpecularMap from "../../assets/8k_earth_specular_map.jpg";
-import EarthCloudsMap from "../../assets/8k_earth_clouds.jpg";
+// import EarthDayMap from "../../assets/8k_earth_daymap.jpg";
+// import EarthNormalMap from "../../assets/8k_earth_normal_map.jpg";
+// import EarthSpecularMap from "../../assets/8k_earth_specular_map.jpg";
+// import EarthCloudsMap from "../../assets/8k_earth_clouds.jpg";
 import EarthNightMap from "../../images/bg3.jpg";
 function Models() {
   const [cloudsMap] = useLoader(TextureLoader, [EarthNightMap]);
@@ -39,7 +39,25 @@ function Models() {
   const earth = new THREE.Mesh(earthGeometry, earthMaterial);
   earth.position.setX(-30);
   earth.position.setY(-10);
-  scene.add(earth);
+
+  const particlesGeometry = new THREE.BufferGeometry();
+  const particlesCount = 40000;
+  const postArray = new Float32Array(particlesCount * 100);
+
+  for (let i = 0; i < particlesCount; i++) {
+    postArray[i] = (Math.random() - 2.9) * 8 * ((Math.random() - 0.1) * 5);
+  }
+
+  particlesGeometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(postArray, 3)
+  );
+  const material = new THREE.PointsMaterial({
+    size: 0.05,
+  });
+  const particlesMesh = new THREE.Points(particlesGeometry, material);
+
+  scene.add(earth, particlesMesh);
   // const geometry2 = new THREE.BoxGeometry(10, 10, 0);
   // const material2 = new THREE.MeshBasicMaterial({
   //   color: 0x00ff00,
@@ -69,19 +87,35 @@ function Models() {
   // }
   // Array(200).fill().forEach(addStar);
   function moveCamera() {
-    // const t = document.body.getBoundingClientRect().top;
+    const t = document.body.getBoundingClientRect().top;
+    console.log(t);
     // camera.rotation.x = t * 0.0001;
     // camera.rotation.y = t * 0.0009;
 
-    earth.rotation.x += 0.03;
+    earth.rotation.x = t * 0.001;
   }
 
   document.body.onscroll = moveCamera;
+  document.addEventListener("mousemove", animateParticles);
+  let mouseX = 0;
+  let mouseY = 0;
 
+  function animateParticles(event) {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+    const elapsedTime = clock.getElapsedTime();
+    particlesMesh.position.x = mouseX * 0.009;
+    particlesMesh.position.y = -mouseY * 0.009;
+    // particlesMesh.rotation.y = -mouseX * (elapsedTime * 0.00008);
+  }
   moveCamera();
+  const clock = new THREE.Clock();
   function animate() {
     requestAnimationFrame(animate);
     earth.rotation.y += 0.005;
+    // const elapsedTime = clock.getElapsedTime();
+    // particlesMesh.rotation.y = -0.001 * elapsedTime;
+    // particlesGeometry.rotation.x = mouseX;
     // pointLight.position.x += 0.1;
 
     // pointLight.position.y += 0.1;
