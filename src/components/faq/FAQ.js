@@ -7,7 +7,7 @@ import "aos/dist/aos.css";
 const { Panel } = Collapse;
 const FAQ = () => {
   useEffect(() => {
-    Aos.init();
+    Aos.init({ duration: 2000 });
   });
   return (
     <div className="py-5 md:py-10">
@@ -18,11 +18,13 @@ const FAQ = () => {
         </h1>
       </div>
       <div className="px-5 sm:space-y-3 lg:space-y-4 xl:space-y-5 sm:px-20 md:px-28 lg:px-36 xl:px-48 2xl:px-60">
-        <div className="border-b-[1px]">
+        <div
+          data-aos="zoom-in"
+          data-aos-delay="5000"
+          className="border-b-[1px]"
+        >
           <Collapse bordered={false} ghost={true}>
             <Panel
-              data-aos="fade-right"
-              data-aos-duration="1000"
               className="bg-slate-50/10 border-[1px]"
               showArrow={false}
               header={<FAQuestion question={"How do I Mint Mpad Chimp"} />}
@@ -35,8 +37,6 @@ const FAQ = () => {
               />
             </Panel>
             <Panel
-              data-aos="fade-right"
-              data-aos-duration="2000"
               className="bg-slate-50/10 border-[1px]"
               showArrow={false}
               header={
@@ -53,8 +53,6 @@ const FAQ = () => {
               />
             </Panel>
             <Panel
-              data-aos="fade-right"
-              data-aos-duration="3000"
               className="bg-slate-50/10 border-[1px]"
               showArrow={false}
               header={<FAQuestion question={"How Much Does A Chimp Cost?"} />}
@@ -67,8 +65,6 @@ const FAQ = () => {
               />
             </Panel>
             <Panel
-              data-aos="fade-right"
-              data-aos-duration="3000"
               className="bg-slate-50/10 border-[1px]"
               showArrow={false}
               header={
